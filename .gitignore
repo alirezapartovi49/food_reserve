@@ -1,0 +1,190 @@
+# Backend .gitignore (FastAPI/Python)
+# Python general
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+pythonenv*
+.python-version
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.dev
+.env.prod
+.venv
+secrets.yml
+config.yml
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+*.db-journal
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+/.tox/
+.coverage.*
+test-results.xml
+
+# IDE & Editors
+.vscode/
+.idea/
+.ropeproject
+.project
+.pydevproject
+*.swp
+*.swo
+*.sublime-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Local development
+local_settings.py
+instance/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Security
+*.key
+*.pem
+*.cert
+*.crt
+
+# Poetry 
+poetry.lock
+.poetry/
+
+# Pipenv (uncomment if not using)
+Pipfile.lock
+
+# PyCharm
+.idea/*
+
+# Mypy
+.mypy.ini
+.venv
+
+
+# Base patterns
+.DS_Store
+*.log
+logs
+node_modules/
+dist/
+.cache/
+.tmp/
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Dependency directories
+/.pnpm-store
+/.yarn/cache
+/.yarn/unplugged
+/.yarn/build-state.yml
+/.yarn/install-state.gz
+.pnp.*
+
+# Build output
+/build/
+/out/
+/public/assets/
+.storybook-out/
+/.next/
+/.nuxt/
+/.svelte-kit/
+/.vuepress/dist/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+/coverage/
+.nyc_output/
+*.lcov
+
+# Framework specific
+# React
+.craco/
+.eslintcache
+
+# Vue
+*.vue.html
+
+# Angular
+/.angular/
+
+# Svelte
+.svelte-kit/package/
+
+# Vite
+.vite/
+
+# System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+firebase-debug.log*
+
+# Local development
+*.local
+
+# ESLint/Prettier
+.eslintcache
+.prettiercache
+
+# Webpack
+webpack-assets.json
+
+# pnpm
+pnpm-lock.yaml
+pnpm-debug.log*
+
+# Bun
+.bun.lockb
