@@ -30,7 +30,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - backend
-      - frontend
+      # - frontend
     networks:
       - app-network
 
