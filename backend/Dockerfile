@@ -1,33 +1,45 @@
-# Dockerfile
-# Use official Python image with slim bookworm (Debian 12) base
-FROM python:3.12.4-alpine as base
+FROM python:3.12-alpine as base
 
-# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apk update && \
+    apk add --no-cache \
     gcc \
+    musl-dev \
     python3-dev \
-    libpq-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    jpeg-dev \
+    zlib-dev && \
+    rm -rf /var/cache/apk/*
 
-RUN pip install --user --no-cache-dir -r requirements.txt
+RUN pip install -U uv
+COPY requirements.txt .
+RUN uv pip install --no-cache-dir --user -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000
-
-# Runtime configuration (override with docker-compose or run command)
 FROM base as production
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "--workers", "4", "main:app"]
 
-# Development configuration
+COPY --from=base /app /app
+COPY --from=base /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=base /usr/local/bin /usr/local/bin
+
+RUN python manage.py collectstatic --noinput
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "your_project.wsgi:application"]
+
 FROM base as development
-ENV MODE=development
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+ENV DEBUG=True
+
+COPY --from=base /app /app
+COPY --from=base /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=base /usr/local/bin /usr/local/bin
+
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir --user -r requirements-dev.txt
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
