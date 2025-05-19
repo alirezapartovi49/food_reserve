@@ -188,3 +188,7 @@ pnpm-debug.log*
 
 # Bun
 .bun.lockb
+
+# database
+db.sqlite3
+*sqlite*
