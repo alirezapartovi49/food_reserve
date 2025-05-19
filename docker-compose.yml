@@ -3,6 +3,7 @@ services:
     build: 
       context: ./backend
       target: development
+    container_name: food_backend
     volumes:
       - ./backend:/app
     expose:

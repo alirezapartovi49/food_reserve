@@ -17,7 +17,8 @@ RUN apk update && \
 
 RUN pip install -U uv
 COPY requirements.txt .
-RUN uv pip install --no-cache-dir --user -r requirements.txt
+RUN uv pip install --no-cache-dir --system -r requirements.txt
+
 
 COPY . .
 
@@ -29,7 +30,7 @@ COPY --from=base /usr/local/bin /usr/local/bin
 
 RUN python manage.py collectstatic --noinput
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "your_project.wsgi:application"]
+CMD ["sh", "-c", "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 --workers 4 your_project.wsgi:application"]
 
 FROM base as development
 
@@ -42,4 +43,6 @@ COPY --from=base /usr/local/bin /usr/local/bin
 COPY requirements-dev.txt .
 RUN pip install --no-cache-dir --user -r requirements-dev.txt
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+RUN python manage.py collectstatic --noinput
+
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
