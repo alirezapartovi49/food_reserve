@@ -1,0 +1,1 @@
+/home/parto/projects/example-app/vendor/hamcrest/hamcrest-php/generator/parts/functions_footer.txt
