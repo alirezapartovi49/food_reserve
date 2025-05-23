@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
-import locale
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -188,6 +187,3 @@ LANGUAGES = [
     ("fa", "Farsi"),
     ("en", "English"),
 ]
-
-
-locale.setlocale(locale.LC_ALL, "fa_IR.UTF-8")
