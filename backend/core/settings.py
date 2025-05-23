@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+import locale
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,13 +40,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # local apps
-    "accounts.apps.AccountsConfig",
-    "auth.apps.AuthConfig",
     # external apps
     "drf_spectacular",
     "rest_framework",
     "django_filters",
+    "django_jalali",
+    # local apps
+    "accounts.apps.AccountsConfig",
+    "auth.apps.AuthConfig",
+    "food.apps.FoodConfig",
 ]
 
 MIDDLEWARE = [
@@ -103,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = "fa-ir"
+LANGUAGE_CODE = "fa"
 
 TIME_ZONE = "Asia/Tehran"
 
@@ -185,3 +188,6 @@ LANGUAGES = [
     ("fa", "Farsi"),
     ("en", "English"),
 ]
+
+
+locale.setlocale(locale.LC_ALL, "fa_IR.UTF-8")
