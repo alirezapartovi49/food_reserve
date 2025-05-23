@@ -1,5 +1,9 @@
 from django.db import models
-from django.core.exceptions import ValidationError
+
+
+class FoodTypeChoices(models.TextChoices):
+    POLO = "pl", "پلو"
+    BREAD = "br", "نونی"
 
 
 class FoodDate(models.Model):
@@ -19,6 +23,10 @@ class Food(models.Model):
     )
     name = models.CharField(max_length=100, verbose_name="نام غذا")
     description = models.TextField(blank=True, verbose_name="توضیحات")
+    food_type = models.CharField(
+        choices=FoodTypeChoices.choices,
+        default=FoodTypeChoices.POLO,
+    )
 
     class Meta:
         verbose_name = "غذا"
