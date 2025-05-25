@@ -20,10 +20,18 @@ SECRET_KEY = os.getenv(
     "SECRET_KEY", "django-insecure-pjr22mt@qfiyr&_&o8zrdo&^)tbo1e+34@7ie*$0+&h%1dxoh6"
 )
 
-DEBUG = os.getenv("DEBUG", True)
+DEBUG_ENV = os.getenv("DEBUG")
+DEBUG = True if DEBUG_ENV == "True" or DEBUG_ENV is None else False
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ["127.0.0.1", "46.245.67.45", "food-reserve.chbk.app"]
+else:
+    ALLOWED_HOSTS = [
+        "46.245.67.45",
+        "food-reserve.chbk.app",
+    ]
 
+CSRF_TRUSTED_ORIGINS = ["https://food-reserve.chbk.app"]
 
 AUTH_USER_MODEL = "accounts.user"
 
