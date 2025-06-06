@@ -4,14 +4,14 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r"selfs", views.SelfViewSet, basename="selfs")
 
 urlpatterns = [
-    path("profile/", views.UserProfileAPIView.as_view(), name="profile"),
+    path("profile", views.UserProfileAPIView.as_view(), name="profile"),
     path(
-        "activate_account/", views.ActivateAccountView.as_view(), name="active-account"
+        "activate_account", views.ActivateAccountView.as_view(), name="active-account"
     ),
-    path("delete_account/", views.DeleteAccountView.as_view(), name="delete-account"),
+    path("delete_account", views.DeleteAccountView.as_view(), name="delete-account"),
     path("", include(router.urls)),
 ]
