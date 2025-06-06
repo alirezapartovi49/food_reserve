@@ -23,18 +23,40 @@ SECRET_KEY = os.getenv(
 DEBUG_ENV = os.getenv("DEBUG")
 DEBUG = True if DEBUG_ENV == "True" or DEBUG_ENV is None else False
 
-if DEBUG:
-    ALLOWED_HOSTS = ["127.0.0.1", "46.245.67.45", "food-reserve.chbk.app"]
-else:
-    ALLOWED_HOSTS = [
-        "46.245.67.45",
-        "food-reserve.chbk.app",
-    ]
+APPEND_SLASH = False
 
-CSRF_TRUSTED_ORIGINS = ["https://food-reserve.chbk.app"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "46.245.67.45",
+    "food-reserve.chbk.app",
+    "localhost",
+    "food-reserve2.chbk.app",
+]
+if not DEBUG:
+    del ALLOWED_HOSTS[0]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://food-reserve.chbk.app",
+    "http://localhost",
+    "https://food-reserve2.chbk.app",
+]
 
 AUTH_USER_MODEL = "accounts.user"
 
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://food-reserve.chbk.app",
+    "https://food-reserve2.chbk.app",
+]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
 
 INSTALLED_APPS = [
     # admin panel
@@ -56,6 +78,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "auth.apps.AuthConfig",
     "food.apps.FoodConfig",
+    "reserve.apps.ReserveConfig",
 ]
 
 MIDDLEWARE = [
