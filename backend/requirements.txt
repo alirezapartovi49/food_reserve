@@ -1,9 +1,11 @@
 asgiref==3.8.1
 attrs==25.3.0
 django==5.2.1
+django-cors-headers==4.7.0
 django-daisy
 django-filter==25.1
 django-jalali==7.4.0
+django-jalali-date==2.0.0
 djangorestframework==3.16.0
 djangorestframework-simplejwt==5.5.0
 drf-spectacular==0.28.0
