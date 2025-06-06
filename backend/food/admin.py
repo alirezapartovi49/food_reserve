@@ -90,5 +90,5 @@ class SideFishesAdmin(admin.ModelAdmin):
     def food_list(self, obj):
         return ", ".join([food.name for food in obj.foods.all()])
 
-    food_list.short_description = "Associated Foods"
+    food_list.short_description = "غذا های مرتبط"
     used_count.short_description = "تعداد استفاده شده"
