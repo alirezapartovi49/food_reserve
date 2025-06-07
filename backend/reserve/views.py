@@ -17,7 +17,17 @@ class ReserveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, GenericView
     serializer_class = ReserveSerializer
 
     def get_queryset(self):
-        queryset = Reserve.objects.filter(user=self.request.user)
+        filters = {"user": self.request.user}
+
+        if self.action == "list":
+            start_date = self.request.content_params.get("start-date", None)
+            if start_date is not None:
+                start_date = datetime.datetime.fromisoformat(start_date).date()
+
+                filters["date__gte"] = start_date
+                filters["date__lte"] = start_date + datetime.timedelta(days=6)
+
+        queryset = Reserve.objects.filter(**filters)
         return queryset
 
     def perform_create(self, serializer):
@@ -52,14 +62,15 @@ class ReserveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, GenericView
         student = (
             Student.objects.filter(user=self.request.user).only("has_dormitory").first()
         )
+
         if student is None:
             return user_date_reserves < 1
 
-        has_dormitory: bool = student.has_dormitory
+        has_dormitory = student.has_dormitory
         if has_dormitory:
             return user_date_reserves < 2
         else:
-            return False
+            return user_date_reserves < 1
 
 
 class TodayView(APIView):
