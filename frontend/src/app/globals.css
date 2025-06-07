@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+    /* font dana */
+    @font-face {
+      font-family: DanaLight;
+      src: url("fonts/Dana/woff2/Dana-Light.woff2");
+    }
+    @font-face {
+      font-family: DanaRegular; /*400*/
+      src: url("fonts/Dana/woff2/DanaFaNum-Regular.woff2");
+    }
+    @font-face {
+      font-family: DanaMedium; /*500*/
+      src: url("fonts/Dana/woff2/DanaFaNum-Medium.woff2");
+    }
+    @font-face {
+      font-family: DanaDemiBold; /*600*/
+      src: url("fonts/Dana/woff2/DanaFaNum-DemiBold.woff2");
+    }
+    body{
+      @apply max-w-[1440px] mx-auto
+    }
+  }
+  @layer utilities {
+    .container{
+      @apply w-full md:max-w-[990px] mx-auto p-2.5 xl:p-0
+    }
+  }
