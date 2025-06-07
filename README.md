@@ -1,7 +1,7 @@
 ---
 ## 🍽️ Food Reserve — Restaurant Reservation System
 
-####A simple web-based food reservation system (e.g., restaurant table booking or food event ticketing) built using modern technologies. Users can browse menus, reserve tables, and manage their bookings.
+#### A simple web-based food reservation system (e.g., restaurant table booking or food event ticketing) built using modern technologies. Users can browse menus, reserve tables, and manage their bookings.
 ---
 
 ### 🔧 Tech Stack
