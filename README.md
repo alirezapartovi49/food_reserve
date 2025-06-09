@@ -67,30 +67,14 @@ food_reserve/
 
 ---
 
-### 🛡️ Environment Variables
-
-Set these in `.env` files inside each service:
-
-- **Backend**:
-
-  ```env
-  SECRET_KEY=your-secret-key
-  DEBUG=True
-  DB_NAME=foodreserve
-  DB_USER=admin
-  DB_PASSWORD=adminpass
-  ```
-
-- **Frontend**:
-  ```env
-  NEXT_PUBLIC_API_URL=http://localhost:8000/api
-  ```
-
----
-
 ### 🧪 Testing
 
-You can test the API endpoints via:
+the api docs is in this link and you can run backend tests with python manage.py test {{app_name}}
+
+```
+cd backend
+python manage.py test accounts # and more like auth, food, reserve
+```
 
 - **Swagger UI**: http://localhost/api/docs
 
