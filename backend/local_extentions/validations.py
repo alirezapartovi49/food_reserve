@@ -31,7 +31,7 @@ _persian_to_english = {
 }
 
 persian_chars = [
-    " ",
+" ",
     "آ",
     "ؤ",
     "ئ",
@@ -69,7 +69,7 @@ persian_chars = [
     "ژ",
     "چ",
     "پ",
-    "٫",
+"٫",
 ]
 
 
@@ -88,19 +88,12 @@ def persian_to_english(number: str) -> str:
     return num
 
 
-def validate_email(email: str) -> str | None:
-    regex = re.compile("[a-z0-9]+@[a-z]+\.[a-z]{2,3}")
+def is_persian(field: str) -> object or None:
+    """used for check full name is persian"""
 
-    if not regex.match(email):
-        raise ValidationError(_("Invalid phone number"))
-
-    return email
-
-
-# def is_persian(field: str) -> object or None:
-#     for i in field:
-#         if i not in persian_chars:
-#             if i not in _english_to_persian:
-#                 if i not in _persian_to_english:
-#                     raise ValidationError("the field must be persian or not have invalid chars")
-#     return field
+    for i in field:
+        if i not in persian_chars:
+            if i not in _english_to_persian:
+                if i not in _persian_to_english:
+                    raise ValidationError("the field must be persian or not have invalid chars")
+    return field

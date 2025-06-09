@@ -7,7 +7,7 @@ class IsActiveUser(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return bool(request.user)
+        return bool(request.user) and bool(request.user.is_authenticated) and bool(request.user.is_active)
 
 
 class IsAdminOrReadOnly(BasePermission):

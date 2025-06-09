@@ -6,7 +6,7 @@ from . import user_views as views
 app_name = "auth"
 
 
-urlpatterns = [
+urlpatterns = [  # this field for old project
     # path("login/", views.UserLoginView.as_view()),
     # path("register/", views.UserRegisterView.as_view()),
     # path("verify/", views.UserVerifyView.as_view()),
@@ -17,10 +17,7 @@ urlpatterns = [
 ]
 
 urlpatterns = [
-    path("login", views.MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("register", views.RegisterView.as_view(), name="register"),
-    path("refresh", views.MyTokenRefreshView.as_view(), name="token_refresh"),
-    # path('profile/', views.getUserProfile, name="users-profile"),
-    # path('profile/update/', views.updateUserProfile, name="user-profile-update"),
-    # path('', views.getUsers, name="users"),
+    path("login", views.CustomizedTokenObtainPairView.as_view(), name="login"),
+    path("refresh", views.CustomizedTokenRefreshView.as_view(), name="token_refresh"),
 ]

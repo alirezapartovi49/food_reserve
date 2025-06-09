@@ -10,8 +10,15 @@ User = get_user_model()
 
 
 class UserLogin(models.Model):
+    """this model save logins
+    now its inactive
+    """
+
     user = models.ForeignKey(
-        User, on_delete=models.DO_NOTHING, related_name="logins", verbose_name=_("user") # handle on_delete in db level
+        User,
+        on_delete=models.DO_NOTHING,
+        related_name="logins",
+        verbose_name=_("user"),  # handle on_delete in db level
     )
     refresh_token = models.CharField(max_length=600, verbose_name=_("refresh token"))
     expired_at = models.DateTimeField(verbose_name=_("expired time"))

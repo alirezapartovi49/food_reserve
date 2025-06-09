@@ -1,3 +1,7 @@
+"""this file is from old project
+in old project i used it but in new project i used simplejwt
+"""
+
 from typing import Dict, ByteString
 
 from django.contrib.auth import get_user_model
@@ -21,7 +25,7 @@ def set_token_claims(token: Token, data: Dict) -> Token:
 
 def get_token_by_user(user: User, client_info: Dict) -> Dict:
     token = RefreshToken.for_user(user=user)
-    print(token , len(str(token)))
+    print(token, len(str(token)))
 
     token = set_token_claims(token=token, data=client_info)
     print(token, len(str(token)))

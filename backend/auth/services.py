@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Dict
-from random import randint
 
 from django.contrib.auth import get_user_model
 from django.conf import settings

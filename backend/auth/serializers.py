@@ -1,10 +1,11 @@
-from django.core import exceptions
-from django.contrib.auth.password_validation import validate_password
+"""this file is from old project"""
 
-# import django.contrib.auth.password_validation a
+from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django.core import exceptions
 
 from local_extentions.validations import persian_to_english, ValidationError
 
@@ -19,9 +20,9 @@ class UserLoginSerializer(serializers.Serializer):
     def validate_email(self, value: str):
         validate_email(value=value)
 
-        user = User.objects.filter(email=value).only()
+        user = User.objects.filter(email=value)
         if not user.exists():
-            raise serializers.ValidationError("کاربری با این اطلاعات وجود ندارد")
+            raise serializers.ValidationError(_("کاربری با این اطلاعات وجود ندارد"))
         self.user = user
         return value
 
@@ -37,50 +38,48 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ("email", "fullname", "username", "city", "password2", "password")
 
-    def validate_email(self, email):
+    def validate_email(self, email: str):
         errors = dict()
         try:
             validate_email(value=email)
         except ValidationError:
-            errors["email"] = ["email validation error"]
+            errors["email"] = [_("فرمت ایمیل درست نیست")]
 
         if "email" not in errors:
             user = User.objects.filter(email=email).exists()
             if user:
-                errors["email"] = ["کاربر با این اطلاعات از قبل وجود دارد"]
+                errors["email"] = [_("ایمیل تکراری است")]
 
         if errors:
             raise serializers.ValidationError(errors)
 
         return email
 
-    def validate(self, data: dict):
-        password = data.get("password")
-        password2 = data.pop("password2")
+    def validate(self, attrs: dict):
+        password: str | None = attrs.get("password")
+        password2: str | None = attrs.pop("password2")
 
         errors = dict()
 
         if password is None:
-            errors["password"] = ["password must not null"]
+            errors["password"] = [_("پسورد نباید خالی باشد")]
 
         if password != password2:
-            errors["password2"] = ["passwords must be match"]
+            errors["password2"] = [_("پسورد ها یکسان نیستند")]
 
-        # try:
-        #     validate_password(password)
-        # except ValidationError:
-        #     errors['password'] = ["Invalid password characters"]
-
-        user = User(**data)
-        try:
-            validate_password(password=password, user=user)
-        except exceptions.ValidationError as e:
-            errors["password"] = list(e.messages)
+        if password is not None:
+            user = User(**attrs)
+            try:
+                validate_password(
+                    password=password, user=user
+                )  # check user is exists and password is macth with user
+            except exceptions.ValidationError as e:
+                errors["password"] = list(e.messages)
 
         if errors:
             raise serializers.ValidationError(errors)
 
-        return super(UserRegisterSerializer, self).validate(data)
+        return super(UserRegisterSerializer, self).validate(attrs)
 
 
 class UserVerifySerializer(serializers.Serializer):

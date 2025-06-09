@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
+from django.utils.translation import gettext_lazy as _
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateAPIView, DestroyAPIView
 
@@ -22,12 +23,15 @@ class UserProfileAPIView(RetrieveUpdateAPIView):
         IsActiveUser,
     )
 
-    def get_object(self):
+    def get_object(self):  # noqa: f2678
+        """return user object"""
         return self.request.user
 
     def get_queryset(self):
         return User.objects.filter(
-            id=self.request.user.id, is_active=True, is_ban=False
+            pk=self.request.user.id,  # auto mapping pk to id
+            is_active=True,
+            is_ban=False,
         )
 
 
@@ -57,7 +61,7 @@ class ActivateAccountView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = ActivateAccountSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        code = serializer.validated_data["code"]
+        code: str = serializer.validated_data["code"]
         user = request.user
         return self.check_code(user, code)
 
@@ -70,10 +74,12 @@ class ActivateAccountView(APIView):
             verification_code.save()
             user.is_active = True
             user.save()
-            return Response({"message": "حساب شما فعال شد"}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": _("حساب شما فعال شد")}, status=status.HTTP_200_OK
+            )
         else:
             return Response(
-                {"error": "کد فعال سازی اشتباه است"},
+                {"error": _("کد فعال سازی اشتباه است")},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -88,6 +94,6 @@ class DeleteAccountView(DestroyAPIView):
         instance: User = request.user
         user = User.objects.filter(id=instance.id)
         user_status = user.delete()
-        if user_status[0] == 1:
+        if user_status[0] == 1:  # check user is deleted successfully
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

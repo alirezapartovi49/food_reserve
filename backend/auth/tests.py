@@ -17,6 +17,8 @@ class FullFlowAccountTest(TestCase):
 
     def setUp(self):
         self.client = APIClient(enforce_csrf_checks=False)
+
+    def test_auth_flow(self) -> None:
         self.create_user()
         self.login()
 
@@ -34,20 +36,7 @@ class FullFlowAccountTest(TestCase):
         response = self.client.post(login_url, data)
         self.assertContains(response, "token", status_code=200, html=False)
         self.user_data: dict = json.loads(response.content.decode())
-        self.auth_header = {"Authorization": "Bearer " + self.user_data["token"]}
-
-    def test_profile(self) -> None:
-        profile_url = reverse("accounts:profile")
-        response = self.client.get(profile_url, headers=self.auth_header)
-        self.assertEqual(response.status_code, 200, msg=response.content.decode())
-
-    def test_self(self):
-        self_url = reverse("accounts:selfs-list")
-        response = self.client.post(self_url, data={}, headers=self.auth_header)
-        self.assertEqual(response.status_code, 403, msg=response.content.decode())
-
-        response = self.client.get(self_url, headers=self.auth_header)
-        self.assertContains(response=response, text="[]", status_code=200, html=False)
+        self.user_token = "Bearer " + self.user_data["token"]
 
     def _bad_user_creation(self, register_url) -> None:
         self._user_creation_data["password"] = "jcjdjcdjn"

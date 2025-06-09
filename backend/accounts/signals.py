@@ -9,6 +9,6 @@ from .models import User, VerificationCode
 @receiver(post_save, sender=User)
 def send_verification_code(sender, instance: User, created: bool, **kwargs):
     if created:
-        code = generate_otp_code()
+        code: str = generate_otp_code()
         VerificationCode.objects.create(user=instance, code=code)
-        send_verifiacation_mail(to=instance.email, code=code)
+        send_verifiacation_mail(to=instance.email, code=int(code))

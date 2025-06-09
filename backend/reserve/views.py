@@ -1,12 +1,13 @@
 import datetime
 
+from rest_framework.exceptions import ValidationError, NotFound
 from rest_framework.viewsets import GenericViewSet, mixins
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import ValidationError
+from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serilizers import ReserveSerializer
+from .serilizers import ReserveSerializer, Today404OutputSerializer
 from accounts.models import Student
 from food.models import FoodDate
 from .models import Reserve
@@ -17,18 +18,24 @@ class ReserveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, GenericView
     serializer_class = ReserveSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return (
+                Reserve.objects.none()
+            )  # just for OpenAPI Type hint error of reqquest.user not found
+
         filters = {"user": self.request.user}
 
         if self.action == "list":
-            start_date = self.request.content_params.get("start-date", None)
-            if start_date is not None:
-                start_date = datetime.datetime.fromisoformat(start_date).date()
+            start_date_str = self.request.query_params.get("start-date")
+            if start_date_str:
+                try:
+                    start_date = datetime.datetime.fromisoformat(start_date_str).date()
+                    end_date = start_date + datetime.timedelta(days=6)
+                    filters["date__range"] = [start_date, end_date]
+                except ValueError:
+                    pass
 
-                filters["date__gte"] = start_date
-                filters["date__lte"] = start_date + datetime.timedelta(days=6)
-
-        queryset = Reserve.objects.filter(**filters)
-        return queryset
+        return Reserve.objects.filter(**filters).order_by("date")
 
     def perform_create(self, serializer):
         date_food_count_is_valid = self.validate_date_food_count(serializer)
@@ -74,14 +81,16 @@ class ReserveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, GenericView
 
 
 class TodayView(APIView):
+    """reurn today reserved foods"""
+
     permission_classes = (IsAuthenticated,)
 
+    @extend_schema(responses={200: ReserveSerializer, 404: Today404OutputSerializer})
     def get(self, request, *args, **kwargs):
         today_reserves = self.get_queryset(request)
 
         if len(today_reserves) < 1:
-            response = Response(data={"status": 404})
-            response.status_code = 404
+            raise NotFound("رزروی برای امروز پیدا نشد")
         else:
             serializer = ReserveSerializer(today_reserves, many=True)
             response = Response(data=serializer.data)

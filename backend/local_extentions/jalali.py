@@ -36,6 +36,8 @@
 #  >>> jalali.Gregorian(2014, 3, 31).persian_year
 #  1393
 
+"""this module is downloaded from github gist"""
+
 import re
 import datetime
 

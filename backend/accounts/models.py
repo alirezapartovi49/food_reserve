@@ -5,6 +5,8 @@ from django.contrib.auth.models import (
     Permission,
     Group,
 )
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 
 from local_extentions.utils import jalali_converter
 from .managers import UserManager
@@ -71,7 +73,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         return self.is_admin
 
-    def jlast_login(self):
+    @extend_schema_field(OpenApiTypes.STR)
+    def jlast_login(self) -> str:
         return jalali_converter(self.last_login)
 
     def jcreated_at(self):

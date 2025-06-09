@@ -1,3 +1,5 @@
+"""this file is from old project"""
+
 from typing import Optional, Tuple, ByteString
 
 from rest_framework_simplejwt.authentication import JWTAuthentication, AuthUser
@@ -12,9 +14,8 @@ from .token import validated_token
 
 class JWTAuth(JWTAuthentication):
     """
-        customize token validation 
+    customize token validation
     """
-
 
     def authenticate(self, request: Request) -> Optional[Tuple[AuthUser, Token]]:
         header = self.get_header(request)
@@ -28,7 +29,6 @@ class JWTAuth(JWTAuthentication):
         validated_token = self.get_validated_token(raw_token, request)
 
         return self.get_user(validated_token), validated_token
-
 
     def get_validated_token(self, raw_token: ByteString, request) -> Token:
         client_info = get_client_info(request)
