@@ -4,6 +4,11 @@
 #### A simple web-based food reservation system (e.g., restaurant table booking or food event ticketing) built using modern technologies. Users can browse menus, reserve tables, and manage their bookings.
 ---
 
+### note
+
+- i am not a frontend developer of this project
+- [frontend developer github](https://github.com/alirezaaa1194/)
+
 ### 🔧 Tech Stack
 
 - **Backend**: [Django](https://www.djangoproject.com/) + Django REST Framework (DRF)
